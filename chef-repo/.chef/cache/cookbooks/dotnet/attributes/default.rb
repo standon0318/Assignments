@@ -1,1 +1,0 @@
-default['dotnet']['download_url']="https://www.microsoft.com/en-us/download/confirmation.aspx?id=30653"

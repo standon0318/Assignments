@@ -1,0 +1,82 @@
+{
+    "AWSTemplateFormatVersion" : "2010-09-09",
+    "Description": "Cloud formation Assignment.",
+    "Resources": {
+        "HelloSG": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupName": "demo_SG",
+                "GroupDescription": "Security group for demo_EC2 Instance.",
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "-1",
+                        "FromPort": "0",
+                        "ToPort": "65535",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "demo_SG"
+                    }
+                ]
+            }
+        },
+         "HelloInstance": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "AvailabilityZone": "us-east-1a",
+                "ImageId": "ami-38708b45",
+                "InstanceType": "t2.micro",
+                "SecurityGroups": [
+                    {
+                        "Ref": "HelloSG"
+                    }
+                ],
+                "KeyName": 
+                    {
+                        "Ref": "KeyName"
+                    },
+                    "IamInstanceProfile":
+                    {
+                        "Ref": "HelloInstanceProfile"
+                    }             
+                
+            }
+        },
+        "HelloRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+               "AssumeRolePolicyDocument": {
+                  "Version" : "2012-10-17",
+                  "Statement": [ {
+                     "Effect": "Allow",
+                     "Principal": {
+                        "Service": [ "ec2.amazonaws.com" ]
+                     },
+                     "Action": [ "sts:AssumeRole" ]
+                  } ]
+               },
+               "Path": "/",
+               "ManagedPolicyArns": ["arn:aws:iam::aws:policy/AdministratorAccess"]
+               }
+         },
+         "HelloInstanceProfile": {
+            "Type": "AWS::IAM::InstanceProfile",
+            "Properties": {
+               "Path": "/",
+               "Roles": [ {
+                  "Ref": "HelloRole"
+               } ]
+            }
+         }
+    },
+       
+    "Parameters" : {
+        "KeyName" : {
+          "Description" : "Amazon EC2 Key Pair",
+          "Type" : "AWS::EC2::KeyPair::KeyName"
+        }
+    }
+}

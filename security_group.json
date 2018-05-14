@@ -1,0 +1,34 @@
+{
+    "AWSTemplateFormatVersion" : "2010-09-09",
+    "Description": "Cloud formation Assignment.",
+    "Resources": {
+        "HelloSG": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupName": "demo_SG",
+                "GroupDescription": "Security group for demo_EC2 Instance.",
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "-1",
+                        "FromPort": "0",
+                        "ToPort": "65535",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "demo_SG"
+                    }
+                ]
+            }
+        }
+	},
+	"Outputs" : {
+	"SG1" : {
+    "Description" : "Exporting security group for EC2 Instance in stack 'Insatnce'",
+    "Value" :  { "Ref" : "HelloSG" },
+    "Export" : { "Name" : "Instance-SG" }
+  }
+}
+}

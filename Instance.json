@@ -1,0 +1,81 @@
+{
+    "AWSTemplateFormatVersion" : "2010-09-09",
+    "Description": "Cloud formation Assignment.",
+    "Resources": {
+            "HelloInstance": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "AvailabilityZone": "us-east-1a",
+                "ImageId": "ami-38708b45",
+                "InstanceType": "t2.micro",
+                "SecurityGroups": [
+                    {
+                        "Fn::ImportValue": "Instance-SG"
+                    }
+                ],
+                "KeyName": 
+                    {
+                        "Ref": "KeyName"
+                    },
+                    "IamInstanceProfile":
+                    {
+                        "Ref": "HelloInstanceProfile"
+                    },           
+                "Tags" : [
+							{
+								"Key" : "AZ",
+								"Value" : "us-east-1a"
+							},
+							{
+								"Key" : "Instance Type",
+								"Value" : "t2.micro"
+							},
+							{
+								"Key" : "KeyPair",
+								"Value" : { "Ref": "KeyName" } 
+							},
+							{
+								"Key" : "IAM Role",
+								"Value" : "HelloRole" 
+							},
+							{
+								"Key" : "Security Group",
+								"Value" : "Instance-SG" 
+							}
+						 ]
+			}
+			},
+        "HelloRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+               "AssumeRolePolicyDocument": {
+                  "Version" : "2012-10-17",
+                  "Statement": [ {
+                     "Effect": "Allow",
+                     "Principal": {
+                        "Service": [ "ec2.amazonaws.com" ]
+                     },
+                     "Action": [ "sts:AssumeRole" ]
+                  } ]
+               },
+               "Path": "/",
+               "ManagedPolicyArns": ["arn:aws:iam::aws:policy/AdministratorAccess"]
+               }
+         },
+         "HelloInstanceProfile": {
+            "Type": "AWS::IAM::InstanceProfile",
+            "Properties": {
+               "Path": "/",
+               "Roles": [ {
+                  "Ref": "HelloRole"
+               } ]
+            }
+         }
+    },
+    "Parameters" : {
+        "KeyName" : {
+          "Description" : "Amazon EC2 Key Pair",
+          "Type" : "AWS::EC2::KeyPair::KeyName"
+        }
+    }
+}

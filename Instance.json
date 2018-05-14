@@ -40,7 +40,7 @@
 							},
 							{
 								"Key" : "Security Group",
-								"Value" : "Instance-SG" 
+								"Value" : { "Fn::ImportValue": "Instance-SG" } 
 							}
 						 ]
 			}

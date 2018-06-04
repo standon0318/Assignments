@@ -9,12 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace project.Controllers
 {
 [Route("api/[controller]")]
-    public class app2Controller : Controller
+    public class app3Controller : Controller
     {
 [HttpGet]
  public string Get()
         {
-            return "Hello from App3.";
+            return "Hello from CD.";
         }
 }
 }
